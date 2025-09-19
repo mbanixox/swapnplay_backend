@@ -1,11 +1,17 @@
 import Config
 
+# Load .env file in development
+if File.exists?(".env") do
+  File.stream!(".env")
+  |> Stream.map(&String.trim/1)
+  |> Stream.reject(&(&1 == "" or String.starts_with?(&1, "#")))
+  |> Stream.map(&String.split(&1, "=", parts: 2))
+  |> Enum.each(fn [key, value] -> System.put_env(key, value) end)
+end
+
 # Configure your database
 config :swapnplay, Swapnplay.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "swapnplay_dev",
+  url: System.get_env("DATABASE_URL"),
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -23,7 +29,7 @@ config :swapnplay, SwapnplayWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "iH05M+xr6WxnR9Yu3zDWACqo0Y52shCxCtEX1+gkcEa3DL9srDyZffmyaIHiVK4e",
+  secret_key_base: System.get_env("SECRET_KEY_BASE"),
   watchers: []
 
 # ## SSL Support
