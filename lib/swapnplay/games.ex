@@ -6,7 +6,15 @@ defmodule Swapnplay.Games do
   alias Swapnplay.RawgClient
 
   def fetch_genres do
-    RawgClient.get("/genres")
+    case RawgClient.get("/genres") do
+      {:ok, response} ->
+        filtered_response =
+          response
+          |> Map.delete("next")
+          |> Map.delete("previous")
+        {:ok, filtered_response}
+      {:error, reason} -> {:error, reason}
+    end
   end
 
   def fetch_games(options \\ []) do
@@ -25,7 +33,15 @@ defmodule Swapnplay.Games do
     params = if search_query, do: Keyword.put(params, :search, search_query), else: params
     params = if genre_query, do: Keyword.put(params, :genres, genre_query), else: params
 
-    RawgClient.get("/games", params)
+    case RawgClient.get("/games", params) do
+      {:ok, response} ->
+        filtered_response =
+          response
+          |> Map.delete("next")
+          |> Map.delete("previous")
+        {:ok, filtered_response}
+      {:error, reason} -> {:error, reason}
+    end
   end
 
   def fetch_genre_details(genre_query) do
@@ -37,6 +53,14 @@ defmodule Swapnplay.Games do
   end
 
   def fetch_game_screenshots(game_id) do
-    RawgClient.get("/games/#{game_id}/screenshots")
+    case RawgClient.get("/games/#{game_id}/screenshots") do
+      {:ok, response} ->
+        filtered_response =
+          response
+          |> Map.delete("next")
+          |> Map.delete("previous")
+        {:ok, filtered_response}
+      {:error, reason} -> {:error, reason}
+    end
   end
 end
