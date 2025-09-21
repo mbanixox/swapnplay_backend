@@ -11,6 +11,7 @@ defmodule Swapnplay.Games do
 
   def fetch_games(options \\ []) do
     search_query = Keyword.get(options, :search)
+    genre_query = Keyword.get(options, :genres)
     platforms = Keyword.get(options, :platforms, RawgClient.default_platforms())
     page = Keyword.get(options, :page, 1)
     page_size = Keyword.get(options, :page_size, 20)
@@ -18,25 +19,11 @@ defmodule Swapnplay.Games do
     params = [
       platforms: platforms,
       page: page,
-      page_size: page_size,
+      page_size: page_size
     ]
 
     params = if search_query, do: Keyword.put(params, :search, search_query), else: params
-
-    RawgClient.get("/games", params)
-  end
-
-  def fetch_games_by_genre(genre_query, options \\ []) do
-    platforms = Keyword.get(options, :platforms, RawgClient.default_platforms())
-    page = Keyword.get(options, :page, 1)
-    page_size = Keyword.get(options, :page_size, 20)
-
-    params = [
-      platforms: platforms,
-      genre: genre_query,
-      page: page,
-      page_size: page_size,
-    ]
+    params = if genre_query, do: Keyword.put(params, :genres, genre_query), else: params
 
     RawgClient.get("/games", params)
   end
@@ -52,5 +39,4 @@ defmodule Swapnplay.Games do
   def fetch_game_screenshots(game_id) do
     RawgClient.get("/games/#{game_id}/screenshots")
   end
-
 end
