@@ -16,7 +16,10 @@ defmodule Swapnplay.RawgClient do
     )
   end
 
-  def get(endpoint, params \\ %{}) do
+  def get(endpoint, params \\ []) do
+    # Convert map to keyword list if needed
+    params = if is_map(params), do: Map.to_list(params), else: params
+
     new()
     |> Req.get(url: endpoint, params: params)
     |> handle_response()

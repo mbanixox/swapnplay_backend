@@ -15,13 +15,13 @@ defmodule Swapnplay.Games do
     page = Keyword.get(options, :page, 1)
     page_size = Keyword.get(options, :page_size, 20)
 
-    params = %{
+    params = [
       platforms: platforms,
       page: page,
       page_size: page_size,
-    }
+    ]
 
-    params = if search_query, do: Map.put(params, :search, search_query), else: params
+    params = if search_query, do: Keyword.put(params, :search, search_query), else: params
 
     RawgClient.get("/games", params)
   end
@@ -31,12 +31,12 @@ defmodule Swapnplay.Games do
     page = Keyword.get(options, :page, 1)
     page_size = Keyword.get(options, :page_size, 20)
 
-    params = %{
+    params = [
       platforms: platforms,
       genre: genre_query,
       page: page,
       page_size: page_size,
-    }
+    ]
 
     RawgClient.get("/games", params)
   end
