@@ -45,4 +45,7 @@ defmodule SwapnplayWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug SwapnplayWeb.Router
+
+  # Enable CORS for frontend requests
+  plug CORSPlug, origin: ["http://localhost:3000", "https://swapnplay.vercel.app"]
 end
