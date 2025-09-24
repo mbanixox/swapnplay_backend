@@ -7,10 +7,6 @@ import Config
 # any compile-time configuration in here, as it won't be applied.
 # The block below contains prod specific runtime configuration.
 
-# Configure RAWG API key for all environments
-config :swapnplay,
-  rawg_api_key: System.get_env("RAWG_API_KEY")
-
 # ## Using releases
 #
 # If you use `mix release`, you need to explicitly enable the server
@@ -106,4 +102,8 @@ if config_env() == :prod do
   #       force_ssl: [hsts: true]
   #
   # Check `Plug.SSL` for all available options in `force_ssl`.
+else
+  # Configure RAWG API key for non-production environments
+  config :swapnplay,
+    rawg_api_key: System.get_env("RAWG_API_KEY")
 end
