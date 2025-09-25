@@ -50,7 +50,8 @@ defmodule Swapnplay.MixProject do
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
       {:req, "~> 0.5.15"},
-      {:cors_plug, "~> 3.0"}
+      {:cors_plug, "~> 3.0"},
+      {:cachex, "~> 4.1"}
     ]
   end
 
