@@ -16,6 +16,17 @@ defmodule SwapnplayWeb.Router do
     # Genre routes
     get "/genres", GenresController, :index
     get "/genres/:genre_query", GenresController, :show
+  end
 
+  # Cache management routes
+  scope "/api/cache", SwapnplayWeb.Api do
+    pipe_through :api
+
+    get "/stats", CacheController, :stats
+    post "/warmup", CacheController, :warm_cache
+    delete "/games/:id", CacheController, :invalidate_game
+    delete "/genres", CacheController, :invalidate_genre
+    delete "/genres/:genre_query", CacheController, :invalidate_genre
+    delete "/clear", CacheController, :clear_all
   end
 end
