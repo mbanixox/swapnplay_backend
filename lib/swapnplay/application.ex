@@ -15,6 +15,30 @@ defmodule Swapnplay.Application do
       # Start a worker by calling: Swapnplay.Worker.start_link(arg)
       # {Swapnplay.Worker, arg},
       # Start to serve requests, typically the last entry
+
+      # Cachex workers
+      {Cachex, name: :games_cache, opts: [
+        # Max 10,000 items in the cache
+        limit: 10_000,
+        expiration: [
+          # 30 minutes expiration default
+          default: :timer.minutes(30),
+          # Run a cleanup every 5 minutes
+          interval: :timer.minutes(5)
+        ],
+        stats: true
+      ]},
+
+      {Cachex, name: :genres_cache, opts: [
+        # Max 1,000 items, genres won't change often
+        limit: 1_000,
+        expiration: [
+          default: :timer.hours(24),
+          interval: :timer.hours(1)
+        ],
+        stats: true
+      ]},
+
       SwapnplayWeb.Endpoint
     ]
 
